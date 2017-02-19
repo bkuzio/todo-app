@@ -1,4 +1,4 @@
-package codepath.com.simpletodo;
+package com.codepath.simpletodo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.codepath.simpletodo.R;
 
 public class MainActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package codepath.com.simpletodo;
+package com.codepath.simpletodo;
 
 import android.app.Activity;
 import android.content.Intent;
