@@ -10,20 +10,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.codepath.simpletodo.R;
 
 public class MainActivity extends Activity {
 
     public static final int EDIT_CODE = 10;
-    private List<String> items;
-    private ArrayAdapter<String> itemsAdapter;
+    private List<TodoItem> items;
+    private ArrayAdapter<TodoItem> itemsAdapter;
     private ListView lvItems;
 
 
@@ -45,24 +39,24 @@ public class MainActivity extends Activity {
         if (text.trim().length() == 0) {
             return;
         }
-        itemsAdapter.add(text);
+        TodoItem item = new TodoItem(text);
+        itemsAdapter.add(item);
+        item.save();
         etNewItem.setText("");
-        writeItems();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == EDIT_CODE) {
-            String todoItem = data.getExtras().getString("todo_item");
+            long todoItem = data.getExtras().getLong("todo_item");
             int position = data.getExtras().getInt("position", -1);
             if (position == -1) {
                 Toast toast = Toast.makeText(this, "Failed to edit item!", Toast.LENGTH_SHORT);
                 toast.show();
                 return;
             }
-            items.set(position, todoItem);
+            items.set(position, TodoItem.findById(TodoItem.class, todoItem));
             itemsAdapter.notifyDataSetChanged();
-            writeItems();
         }
     }
 
@@ -70,9 +64,9 @@ public class MainActivity extends Activity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
-                writeItems();
+                TodoItem todoItem = items.remove(position);
+                todoItem.delete();
                 return true;
             }
         });
@@ -81,7 +75,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent editIntent = new Intent(MainActivity.this, EditItemActivity.class);
-                editIntent.putExtra("todo_item", items.get(position));
+                editIntent.putExtra("todo_item", items.get(position).getId());
                 editIntent.putExtra("position", position);
                 startActivityForResult(editIntent, EDIT_CODE);
             }
@@ -89,25 +83,6 @@ public class MainActivity extends Activity {
     }
 
     private void readItems() {
-        File files = getFilesDir();
-        File todoFile = new File(files, "todo.txt");
-
-        try {
-            items = new ArrayList<>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-            items = new ArrayList<>();
-        }
-    }
-
-    private void writeItems() {
-        File files = getFilesDir();
-        File todoFile = new File(files, "todo.txt");
-
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        items = new ArrayList<>(TodoItem.listAll(TodoItem.class));
     }
 }
