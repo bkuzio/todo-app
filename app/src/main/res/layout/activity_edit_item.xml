@@ -33,13 +33,29 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:text="Set due date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEditItem"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvDueDate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="24sp"
+        android:clickable="true"
+        android:onClick="onEditDueDate" />
+
     <Button
         android:text="Save"
         android:onClick="onSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnSaveEdit"
-        android:layout_below="@+id/etEditItem"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tvDueDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
 </RelativeLayout>

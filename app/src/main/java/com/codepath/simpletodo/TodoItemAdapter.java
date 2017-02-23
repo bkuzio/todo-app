@@ -57,7 +57,7 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
         viewHolder.done.setChecked(todoItem.isDone());
         Date dueDate = todoItem.getDueDate();
         if (dueDate != null) {
-            viewHolder.dueDate.setText(SimpleDateFormat.getDateTimeInstance().format(dueDate));
+            viewHolder.dueDate.setText(SimpleDateFormat.getDateInstance().format(dueDate));
         }
         // Return the completed view to render on screen
         return convertView;
