@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 
         lvItems = (ListView) findViewById(R.id.lvItems);
         readItems();
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new TodoItemAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
     }
